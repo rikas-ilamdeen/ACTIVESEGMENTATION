@@ -1,6 +1,7 @@
 package dsp.tornado.tests;
 
 import dsp.tornado.ConvTornado;
+import ij.ImagePlus;
 import ij.process.FloatProcessor;
 
 public class ValidateSemiSep {
@@ -32,12 +33,23 @@ public class ValidateSemiSep {
         FloatProcessor gpu = (FloatProcessor) src.duplicate();
         if (roi != null) gpu.setRoi(roi);
         c.convolveSemiSep(gpu, kernx, kern_diff);
+        
+        // visualization
+        ImagePlus img=new ImagePlus();
+        img.setProcessor(cpu);
+        img.setTitle("cpu image");
+        img.show();
+        
+        ImagePlus img2=new ImagePlus();
+        img2.setProcessor(gpu);
+        img2.setTitle("gpu image");
+        img2.show();
 
         return TestUtil.check("semiSep["+label+"]", (float[])cpu.getPixels(), (float[])gpu.getPixels(), src.getWidth());
     }
 
     public static void main(String[] args) {
-        FloatProcessor src = TestUtil.makeTestImage(256, 256);
+        FloatProcessor src = TestUtil.makeTestImage(256, 256);     
         if (!run(src, TestUtil.gaussian(9), TestUtil.asymmetric(9))) System.exit(1);
     }
 }

@@ -1,6 +1,7 @@
 package dsp.tornado.tests;
 
 import dsp.tornado.ConvTornado;
+import ij.ImagePlus;
 import ij.process.FloatProcessor;
 
 public class ValidateConv2D {
@@ -12,6 +13,20 @@ public class ValidateConv2D {
         c.convolveFloatCPU(cpu, kernel, kw, kh);
         FloatProcessor gpu = (FloatProcessor) src.duplicate();
         c.convolveFloat(gpu, kernel, kw, kh);
+        
+        
+        // visualization
+        ImagePlus img=new ImagePlus();
+        img.setProcessor(cpu);
+        img.setTitle("cpu image");
+        img.show();
+        
+        ImagePlus img2=new ImagePlus();
+        img2.setProcessor(gpu);
+        img2.setTitle("gpu image");
+        img2.show();
+        
+        
         return TestUtil.check("conv2D", (float[])cpu.getPixels(), (float[])gpu.getPixels(), src.getWidth(), TestUtil.TOL_2D);    }
 
     public static void main(String[] args) {

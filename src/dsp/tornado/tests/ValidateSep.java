@@ -1,6 +1,7 @@
 package dsp.tornado.tests;
 
 import dsp.tornado.ConvTornado;
+import ij.ImagePlus;
 import ij.process.FloatProcessor;
 
 public class ValidateSep {
@@ -16,6 +17,17 @@ public class ValidateSep {
         FloatProcessor gpu = (FloatProcessor) src.duplicate();
         c.convolveSep(gpu, kernx, kern_diff);
 
+        // visualization
+        ImagePlus img=new ImagePlus();
+        img.setProcessor(cpu);
+        img.setTitle("cpu image");
+        img.show();
+        
+        ImagePlus img2=new ImagePlus();
+        img2.setProcessor(gpu);
+        img2.setTitle("gpu image");
+        img2.show();
+        
         return TestUtil.check("sep", (float[])cpu.getPixels(), (float[])gpu.getPixels(), src.getWidth());
     }
 
