@@ -37,6 +37,8 @@ public class ConvFactory {
     /** Runtime check: is any GPU-type device available to TornadoVM? */
     public static boolean isGpuAvailable() {
         try {
+        	// to trigger the preview feature check immediately
+        	Class.forName("uk.ac.manchester.tornado.api.types.arrays.FloatArray");
             TornadoRuntime runtime = TornadoRuntimeProvider.getTornadoRuntime();
             int numBackends = runtime.getNumBackends();
             for (int b = 0; b < numBackends; b++) {
@@ -51,7 +53,12 @@ public class ConvFactory {
             }
             return false;
         } catch (Throwable t) {
-            System.out.println("GPU availability check failed, assuming no GPU: " + t);
+        	if (t.getMessage() != null && t.getMessage().contains("Preview features")) {
+                System.out.println("GPU disabled: --enable-preview not set. "
+                    + "Add '--enable-preview' to JVM arguments.");
+            } else {
+                System.out.println("GPU availability check failed: " + t);
+            }
             return false;
         }
     }
