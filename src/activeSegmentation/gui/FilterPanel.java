@@ -434,6 +434,7 @@ public class FilterPanel extends JFrame implements Runnable, ASCommon {
 				} catch (InterruptedException e) {
 					System.out.println("Benchmark was canceled.");
 				} finally {
+					dsp.ConvFactory.cleanup();   // release native GPU buffers first
 					SwingUtilities.invokeLater(() -> {
 						progressBar.setVisible(false);
 						progressBar.setValue(0);
@@ -441,7 +442,7 @@ public class FilterPanel extends JFrame implements Runnable, ASCommon {
 							String projectDir = System.getProperty("user.dir");
 							new BenchmarkPanel(projectDir);
 						}
-					});
+					}); 
 				}
 			});
 			computationThread.start();
@@ -491,6 +492,7 @@ public class FilterPanel extends JFrame implements Runnable, ASCommon {
 				} catch (InterruptedException e) {
 					System.out.println("Computation was canceled.");
 				} finally {
+					dsp.ConvFactory.cleanup();   // release native GPU buffers firs
 					SwingUtilities.invokeLater(() -> {
 						progressBar.setVisible(false);
 						progressBar.setValue(0);
