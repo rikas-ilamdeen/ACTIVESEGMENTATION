@@ -77,6 +77,20 @@ public class FilterManager extends URLClassLoader implements IFilterManager, IUt
 		return useGPU;
 	}
 
+	/** Controls whether GPU TaskGraphs are pre-warmed before benchmarking.
+	 *  Default true — recommended, since warmup absorbs one-time TornadoVM
+	 *  costs before timing starts. Set false to measure genuine cold-start
+	 *  cost or to debug warmup itself. */
+	private boolean warmupEnabled = true;
+
+	public void setWarmupEnabled(boolean enabled) {
+	    this.warmupEnabled = enabled;
+	}
+
+	public boolean isWarmupEnabled() {
+	    return warmupEnabled;
+	}
+	
 	/**
 	 * 
 	 * @param projectManager
@@ -283,7 +297,7 @@ public class FilterManager extends URLClassLoader implements IFilterManager, IUt
 	    String projectString = projectInfo.getProjectDirectory().get(ASCommon.K_IMAGESDIR);
 	    String filterString  = projectInfo.getProjectDirectory().get(ASCommon.K_FILTERSDIR);
 
-	    if (dsp.ConvFactory.getMode() != dsp.ConvFactory.BackendMode.FORCE_CPU 
+	    if (warmupEnabled && dsp.ConvFactory.getMode() != dsp.ConvFactory.BackendMode.FORCE_CPU 
 	    	    && dsp.ConvFactory.isGpuAvailable()) {
 	    	    warmupGPU(projectString);
 	    	}
@@ -372,7 +386,7 @@ public class FilterManager extends URLClassLoader implements IFilterManager, IUt
 //		}
 		
 		// NEW — warm up if the backend automatically redirects to GPU
-		if (dsp.ConvFactory.getMode() != dsp.ConvFactory.BackendMode.FORCE_CPU && dsp.ConvFactory.isGpuAvailable()) {
+		if (warmupEnabled && dsp.ConvFactory.getMode() != dsp.ConvFactory.BackendMode.FORCE_CPU && dsp.ConvFactory.isGpuAvailable()) {
 		    warmupGPU(projectString);
 		}
 		
