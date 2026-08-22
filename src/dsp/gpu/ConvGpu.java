@@ -1,6 +1,7 @@
 package dsp.gpu;
 
 import dsp.IConv;
+import dsp.IConv2;
 import dsp.gpu.cuda.CudaContextManager;
 import dsp.gpu.cuda.CudaMemoryManager;
 import ij.IJ;
@@ -70,6 +71,25 @@ public class ConvGpu implements IConv {
         }
     }
 
+  
+ 
+ 	public void convolveStructGrad(FloatProcessor src, float[] kernx, float[] kern_diff1,
+ 	                               FloatProcessor gradx, FloatProcessor grady) {
+ 	    int n = src.getWidth() * src.getHeight();
+ 	    System.arraycopy(src.getPixels(), 0, gradx.getPixels(), 0, n);
+ 	    System.arraycopy(src.getPixels(), 0, grady.getPixels(), 0, n);
+ 	    convolveFloat1D(gradx, kern_diff1, Ox); convolveFloat1D(gradx, kernx, Oy);
+ 	    convolveFloat1D(grady, kern_diff1, Oy); convolveFloat1D(grady, kernx, Ox);
+ 	}
+
+ 	public void convolveStructSmooth(float[] kernx, float[] kern_diff1,
+ 	                                 FloatProcessor gx2, FloatProcessor gy2, FloatProcessor gxy) {
+ 	    convolveFloat1D(gx2, kern_diff1, Ox); convolveFloat1D(gx2, kernx, Oy);
+ 	    convolveFloat1D(gy2, kern_diff1, Oy); convolveFloat1D(gy2, kernx, Ox);
+ 	    convolveFloat1D(gxy, kern_diff1, Oy); convolveFloat1D(gxy, kernx, Ox);
+ 	}
+ 	
+ 
     @Override
 	public void convolveSemiSep(FloatProcessor ip, float[] kernx, float[] kern_diff) {
         FloatProcessor ip2 = null;
@@ -95,6 +115,16 @@ public class ConvGpu implements IConv {
         add(ip2, ipx, ip2.getRoi());
         ip.setPixels(ip2.getPixels());
     }
+  
+ 
+    
+    public void convolveSep3(FloatProcessor src, float[] kernx, float[] kern_diff1, float[] kern_diff2,
+			FloatProcessor gradx, FloatProcessor grady,
+			FloatProcessor lap_xx, FloatProcessor lap_yy, FloatProcessor lap_xy)
+    {
+    	
+    }
+ 
 
     @Override
 	public void convolveSemiSepIter(FloatProcessor ip, float[] kernx, float[] kern_diff) {
