@@ -60,7 +60,7 @@ public class FAbout extends JFrame {
 				"- Raghavendra Singh Chauhan, GSOC 2020\n"+
 				"- Joanna Stachera, GSOC 2020\n"+
 				"- Piyumal Demotte, GSOC 2021\n" +
-				"- Purva Chaudhari, GSOC  2021 - 2022\n"+
+				"- Purva Chaudhari, intern 2021 - 2022\n"+
 				"- Vasileios-Digenis Akritas, intern 2021\n"+ 
 				"- Aaryan Gautam, GSOC 2023\n"+
 				"- Rikas Ilamdeen, GSOC 2024 - 2025" 
