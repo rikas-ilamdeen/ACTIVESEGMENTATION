@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.util.List;
 import java.util.*;
 
@@ -82,7 +83,13 @@ public class FilterPanel extends JFrame implements Runnable, ASCommon {
 		progressBar.setVisible(false); // Initially hidden
 		getContentPane().add(progressBar, BorderLayout.SOUTH); // Add progress bar to the bottom of the frame
 		
-		showPanel();
+		try {
+			showPanel();
+		}
+		catch (Throwable e)
+		{
+			System.out.println("Failure "+e);
+		}
 
 	}
 
@@ -99,7 +106,11 @@ public class FilterPanel extends JFrame implements Runnable, ASCommon {
 	 */
 	private void showPanel() {
 		setTitle("Filters");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(FilterPanel.class.getResource("logo.png")));
+//		setIconImage(Toolkit.getDefaultToolkit().getImage(FilterPanel.class.getResource("logo.png")));
+		URL logoURL = FilterPanel.class.getResource("logo.png");
+		if (logoURL != null) {
+		    setIconImage(Toolkit.getDefaultToolkit().getImage(logoURL));
+		}
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		pane = new JTabbedPane();
 		pane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);

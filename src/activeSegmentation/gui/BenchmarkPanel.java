@@ -11,6 +11,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -30,6 +31,8 @@ public class BenchmarkPanel extends JFrame {
     private final String exportDir;
 
     public BenchmarkPanel(String exportDir) {
+    	//CH
+    	System.out.println("Final panel loading");
         this.exportDir = exportDir;
         buildUI();
     }
@@ -41,8 +44,12 @@ public class BenchmarkPanel extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 480);
         setLocationRelativeTo(null);
-        setIconImage(Toolkit.getDefaultToolkit().getImage(BenchmarkPanel.class.getResource("logo.png")));
-
+//        setIconImage(Toolkit.getDefaultToolkit().getImage(BenchmarkPanel.class.getResource("logo.png")));
+        URL logoURL = BenchmarkPanel.class.getResource("logo.png");
+        if (logoURL != null) {
+            setIconImage(Toolkit.getDefaultToolkit().getImage(logoURL));
+        }
+        
         // Header
         JLabel header = new JLabel("CPU vs GPU Parallel Benchmark", SwingConstants.CENTER);
         header.setFont(ASCommon.largeFONT);
