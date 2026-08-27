@@ -58,18 +58,25 @@ public class CreateOpenProjectGUI implements Runnable, ASCommon {
 	public CreateOpenProjectGUI(ProjectManager projectManager) {
 		this.projectManager = projectManager;
 		projectList = new JComboBox<>(ProjectType.values());
+		//CH 
+		System.out.println("CreatProjectGUI loaded"+" "+projectList);
 	}
 
 	@Override
 	public void run() {
 		mainFrame = new JFrame();
-		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(CreateOpenProjectGUI.class.getResource("logo.png")));
+//		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(CreateOpenProjectGUI.class.getResource("logo.png")));
+		URL logoURL = CreateOpenProjectGUI.class.getResource("logo.png");
+		if (logoURL != null) {
+		    mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(logoURL));
+		}
 		mainFrame.getContentPane().setBackground(Color.GRAY);
 		mainFrame.setSize(frameWidth, frameHeight);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Prevent the default close operation
-
+		System.out.println("CreatProjectGUI running");
+		
 		// Confirm Exit to intercept the window close event
 		mainFrame.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override

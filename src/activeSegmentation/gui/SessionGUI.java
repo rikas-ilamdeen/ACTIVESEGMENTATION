@@ -68,7 +68,7 @@ public class SessionGUI extends JFrame implements ASCommon {
         //createTable();
         loadData(sessionList);
         mainInterface();
-    }
+        System.out.println("SessionGUI loaded");    }
 
  
    
